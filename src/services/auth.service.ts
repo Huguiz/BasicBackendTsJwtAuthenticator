@@ -2,7 +2,7 @@ import UserModel from "../models/user.model";
 import VerificationCodeModel from "../models/verificationCode.model";
 import VerificationCodeType from "../constants/verificationCodeType";
 import {
-    fiveMinuteAgo,
+    fiveMinutesAgo,
     ONE_DAY_MS,
     oneHourFromNow,
     oneYearFromNow,
@@ -198,7 +198,7 @@ export const sendPasswordResetEmail = async (email: string) => {
     const user = await UserModel.findOne({ email });
     appAssert(user, NOT_FOUND, "User not found");
 
-    const fiveMinAgo = fiveMinuteAgo();
+    const fiveMinAgo = fiveMinutesAgo();
 
     const count = await VerificationCodeModel.countDocuments({
         userId: user._id,
@@ -214,9 +214,7 @@ export const sendPasswordResetEmail = async (email: string) => {
         expiresAt,
     });
 
-    const url = `${APP_ORIGIN}/password/reset
-    ?code=${verificationCode._id}
-    &exp=${verificationCode.expiresAt}`;
+    const url = `${APP_ORIGIN}/password/reset?code=${verificationCode._id}&exp=${verificationCode.expiresAt.getTime()}`;
 
     const emailSent = await sendMail({
         to: user.email,

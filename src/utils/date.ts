@@ -7,7 +7,7 @@ export const thirtyDaysFromNow = () =>
 export const fifteenMinutesFromNow = () =>
     new Date(Date.now() + 15 * 60 * 1000);
 
-export const fiveMinuteAgo = () =>
+export const fiveMinutesAgo = () =>
     new Date(Date.now() - 5 * 60 * 1000);
 
 export const oneHourFromNow = () =>
